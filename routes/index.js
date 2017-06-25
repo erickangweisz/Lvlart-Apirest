@@ -42,6 +42,7 @@ api.put('/user/:userId/scorebydefeat', auth, userCtrl.setDefeatScoreByUserId)
 api.put('/user/:userId/updateuser', auth, userCtrl.updateUser)
 api.put('/user/:userId/uploadavatar', userCtrl.uploadAvatar)
 api.put('/user/:userId/uploadimghead', userCtrl.uploadImgHead)
+api.get('/user/:userId/imghead', userCtrl.getImageHeaderByUserId)
 
 // paths [ theme ]
 api.post('/theme', auth, themeCtrl.createTheme)

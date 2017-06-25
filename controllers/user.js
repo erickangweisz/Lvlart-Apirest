@@ -235,6 +235,14 @@ function getXusersOrderByCategory(req, res) {
     })
 }
 
+function getImageHeaderByUserId(req, res) {
+    let userId = req.params.userId
+
+    User.findById(userId, (err, imageHeader) => {
+        res.status(200).sendFile(imageHeader.img_head)
+    })
+}
+
 module.exports = {
     signUp,
     signIn,
@@ -251,5 +259,6 @@ module.exports = {
     getUserByUsername,
     getXusersOrderByCategory,
     uploadAvatar,
-    uploadImgHead
+    uploadImgHead,
+    getImageHeaderByUserId
 }
