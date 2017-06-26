@@ -15,5 +15,8 @@ app.use((req, res, next) => {
     next()
 })
 app.use('/api', api)
+app.get('/images/lvlart', (req, res) => {
+    res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/lvlart.png')
+})
 
 module.exports = app
