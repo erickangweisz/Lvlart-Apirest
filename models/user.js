@@ -17,7 +17,7 @@ const UserSchema = new Schema({
     visits: Number,
     email: { type: String, unique: true, lowercase: true },
     signupDate: { type: Date, default: Date.now() },
-    category: { type: String, enum: ['illustration', '3d_model', 'photography'] },
+    category: { type: String, enum: ['illustration', 'modeling', 'photography'] },
     experience: Number,
     n_challenges: Number,
     n_victories: Number,
