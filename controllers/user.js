@@ -225,9 +225,9 @@ function getXusersOrderByCategory(req, res) {
     let xNumber = Number(req.params.number)
 
     // get categories from request params.
-    let categories = req.params.categories
+    let category = req.params.category
 
-    User.find({ categories: categories }).sort({ score: 'desc' }).limit(xNumber).exec(function(err, users) {
+    User.find({ category: category }).sort({ score: 'desc' }).limit(xNumber).exec(function(err, users) {
         if (err) return res.status(500).send({ message: `request error: ${err}` })
         if (!users) return res.status(404).send({ message: 'users do not exist' })
 
