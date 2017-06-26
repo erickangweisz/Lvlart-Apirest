@@ -243,6 +243,14 @@ function getImageHeaderByUserId(req, res) {
     })
 }
 
+function getAvatarByUserId(req, res) {
+    let userId = req.params.userId
+
+    User.findById(userId, (err, avatar) => {
+        res.status(200).sendFile(avatar.avatar)
+    })
+}
+
 module.exports = {
     signUp,
     signIn,
@@ -260,5 +268,6 @@ module.exports = {
     getXusersOrderByCategory,
     uploadAvatar,
     uploadImgHead,
-    getImageHeaderByUserId
+    getImageHeaderByUserId,
+    getAvatarByUserId
 }
