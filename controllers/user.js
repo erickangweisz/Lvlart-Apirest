@@ -15,6 +15,7 @@ var storage = multer.diskStorage({
     }
 })
 var upload = multer({ storage: storage }).single('avatar')
+var upld = multer({ storage: storage }).single('img_head')
 
 function signUp(req, res) {
     const user = new User({
@@ -79,7 +80,7 @@ function uploadAvatar(req, res) {
 }
 
 function uploadImgHead(req, res) {
-    upload(req, res, function(err) {
+    upld(req, res, function(err) {
         if (err) {
             // An error occurred when uploading
         }

@@ -1,6 +1,18 @@
 'use strict'
 
 const Image = require('../models/image')
+const config = require('../config')
+    // multer
+const multer = require('multer')
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'gallery/')
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + '.png')
+    }
+})
+var upload = multer({ storage: storage }).single('url_image')
 
 function getImage(req, res) {
     let imageId = req.params.imageId
@@ -23,25 +35,48 @@ function getImages(req, res) {
 }
 
 function saveImage(req, res) {
-    let image = new Image()
-    image.title = req.body.title
-    image.description = req.body.description
-    image.url_image = req.body.url_image
-    image.id_user = req.body.id_user
-    image.category = req.body.category
-    image.n_likes = 0
-    image.n_dislikes = 0
-    image.uploaded_at = new Date()
-    image.score = 0
+    upload(req, res, function(err) {
+        if (err) {
+            // An error occurred when uploading
+        }
+        // Everything went fine
+        let image = new Image()
+        image.title = req.body.title
+        image.description = req.body.description
+        image.url_image = config.DIRNAME + req.file.path.replace('\\', '/')
+        image.id_user = req.body.id_user
+        image.category = req.body.category
+        image.n_likes = 0
+        image.n_dislikes = 0
+        image.uploaded_at = new Date()
+        image.score = 0
 
-    image.save((err, imageStored) => {
-        if (err) res.status(500).send({ message: `error saving to database: ${err}` })
+        image.save((err, imageStored) => {
+            if (err) res.status(500).send({ message: `error saving to database: ${err}` })
 
-        res.status(201).send({ image: imageStored })
+            res.status(201).send({ image: imageStored })
+        })
     })
 }
 
-function updateImage(req, res) {
+function updateUrlImage(req, res) {
+    let imageId = req.params.imageId
+
+    upload(req, res, function(err) {
+        if (err) {
+            // An error occurred when uploading
+        }
+        // Everything went fine
+        let update = config.DIRNAME + req.file.path.replace('\\', '/')
+        Image.findByIdAndUpdate(imageId, { url_image: update }, (err, imageUpdated) => {
+            if (err) res.status(500).send({ message: `error updating image: ${err}` })
+
+            res.status(200).send({ image: imageUpdated })
+        })
+    })
+}
+
+function uploadImage(req, res) {
     let imageId = req.params.imageId
     let update = req.body
 
@@ -124,15 +159,25 @@ function getAllImagesByUserId(req, res) {
     })
 }
 
+function getUrlImageByImageId(req, res) {
+    let imageId = req.params.imageId
+
+    Image.findById(imageId, (err, image) => {
+        res.status(200).sendFile(image.url_image)
+    })
+}
+
 module.exports = {
     getImage,
     getImages,
+    uploadImage,
     setLikeScoreByImageId,
     setDislikeScoreByImageId,
     getXimagesOrderByLatestUpload,
     getXimagesOrderByScore,
     getAllImagesByUserId,
-    updateImage,
+    getUrlImageByImageId,
+    updateUrlImage,
     saveImage,
     deleteImage
 }

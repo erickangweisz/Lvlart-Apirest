@@ -8,7 +8,7 @@ const ImageSchema = Schema({
     description: String,
     url_image: String,
     id_user: String,
-    category: { type: String, enum: ['illustration', '3d_model', 'photography'] },
+    category: { type: String, enum: ['illustration', 'modeling', 'photography'] },
     n_likes: Number,
     n_dislikes: Number,
     uploaded_at: Date,
