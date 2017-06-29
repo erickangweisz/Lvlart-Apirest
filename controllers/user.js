@@ -236,6 +236,18 @@ function getXusersOrderByCategory(req, res) {
     })
 }
 
+function getXusersOrderByVictories(req, res) {
+    // get 'x' number from request params.
+    let xNumber = Number(req.params.number)
+
+    User.find({}).sort({ n_victories: 'desc' }).limit(xNumber).exec(function(err, users) {
+        if (err) return res.status(500).send({ message: `request error: ${err}` })
+        if (!users) return res.status(404).send({ message: 'users do not exist' })
+
+        res.status(200).send({ users })
+    })
+}
+
 function getImageHeaderByUserId(req, res) {
     let userId = req.params.userId
 
@@ -270,5 +282,6 @@ module.exports = {
     uploadAvatar,
     uploadImgHead,
     getImageHeaderByUserId,
-    getAvatarByUserId
+    getAvatarByUserId,
+    getXusersOrderByVictories
 }

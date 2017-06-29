@@ -1,6 +1,20 @@
 'use strict'
 
 const Duel = require('../models/duel')
+const config = require('../config')
+
+// multer
+const multer = require('multer')
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'uploads/duels')
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + '.png')
+    }
+})
+var upload = multer({ storage: storage }).single('id_image_challenged')
+var upld = multer({ storage: storage }).single('id_image_challenger')
 
 //const Theme = require('../controllers/theme')
 //var idsThemes = Theme.getIds // return: [Function: getIds]
@@ -92,6 +106,103 @@ function getAllDuelsByCategory(req, res) {
     })
 }
 
+function deleteDuel(req, res) {
+    let duelId = req.params.duelId
+
+    Duel.findByIdAndRemove(duelId, (err, comment) => {
+        if (err) res.status(500).send({ message: `error deleting duel: ${err}` })
+
+        res.status(200).send({ message: 'the duel has been deleted' })
+    })
+}
+
+function uploadImageChallenged(req, res) {
+    upload(req, res, function(err) {
+        if (err) {
+            // An error occurred when uploading
+        }
+        // Everything went fine
+        let duelId = req.params.duelId
+
+        let update = { id_image_challenged: config.DIRNAME + req.file.path.replace('\\', '/') }
+
+        Duel.findByIdAndUpdate(duelId, update, (err, duelUpdated) => {
+            if (err) res.status(500).send({ message: `error updating image challenged: ${err}` })
+
+            res.status(200).send({ user: duelUpdated })
+        })
+    })
+}
+
+function uploadImageChallenger(req, res) {
+    upld(req, res, function(err) {
+        if (err) {
+            // An error occurred when uploading
+        }
+        // Everything went fine
+        let duelId = req.params.duelId
+
+        let update = { id_image_challenger: config.DIRNAME + req.file.path.replace('\\', '/') }
+
+        Duel.findByIdAndUpdate(duelId, update, (err, duelUpdated) => {
+            if (err) res.status(500).send({ message: `error updating image challenger: ${err}` })
+
+            res.status(200).send({ user: duelUpdated })
+        })
+    })
+}
+
+function getImageChallenged(req, res) {
+    let duelId = req.params.duelId
+
+    Duel.findById(duelId, (err, id_image_challenged) => {
+        res.status(200).sendFile(id_image_challenged.id_image_challenged)
+    })
+}
+
+function getImageChallenger(req, res) {
+    let duelId = req.params.duelId
+
+    Duel.findById(duelId, (err, id_image_challenger) => {
+        res.status(200).sendFile(id_image_challenger.id_image_challenger)
+    })
+}
+
+function updateDuel(req, res) {
+    let duelId = req.params.duelId
+    let update = req.body
+
+    Duel.findByIdAndUpdate(duelId, update, (err, duelUpdated) => {
+        if (err) res.status(500).send({ message: `error updating duel: ${err}` })
+
+        res.status(200).send({ duel: duelUpdated })
+    })
+}
+
+function setLikeByChallenged(req, res) {
+    let duelId = req.params.duelId
+
+    // get image by id and increase likes.
+    Duel.findOneAndUpdate({ _id: duelId }, { $inc: { likes_user_challenged: 1 } }, (err, duel) => {
+        if (err) return res.status(500).send({ message: `request error: ${err}` })
+        if (!duel) return res.status(404).send({ message: 'the duel dont exist' })
+
+        res.status(200).send({ duel })
+    })
+}
+
+function setLikeByChallenger(req, res) {
+    let duelId = req.params.duelId
+
+    // get image by id and increase likes.
+    Duel.findOneAndUpdate({ _id: duelId }, { $inc: { likes_user_challenger: 1 } }, (err, duel) => {
+        if (err) return res.status(500).send({ message: `request error: ${err}` })
+        if (!duel) return res.status(404).send({ message: 'the duel dont exist' })
+
+        res.status(200).send({ duel })
+    })
+}
+
 module.exports = {
     createDuel,
     getAllDuels,
@@ -99,5 +210,13 @@ module.exports = {
     getAllDuelsByUserId,
     getAllDuelsOrderByCreation,
     getXduelsOrderByCreation,
-    getAllDuelsByCategory
+    getAllDuelsByCategory,
+    deleteDuel,
+    uploadImageChallenged,
+    uploadImageChallenger,
+    getImageChallenged,
+    getImageChallenger,
+    updateDuel,
+    setLikeByChallenged,
+    setLikeByChallenger
 }

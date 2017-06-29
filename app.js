@@ -15,8 +15,15 @@ app.use((req, res, next) => {
     next()
 })
 app.use('/api', api)
+
+// return lvlart header
 app.get('/images/lvlart', (req, res) => {
     res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/lvlart.png')
+})
+
+// return 'vs' image
+app.get('/images/vs', (req, res) => {
+    res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/vs.png')
 })
 
 module.exports = app
