@@ -167,6 +167,21 @@ function getUrlImageByImageId(req, res) {
     })
 }
 
+function getXimagesOrderByCategory(req, res) {
+    // get 'x' number from request params.
+    let xNumber = Number(req.params.number)
+
+    // get categories from request params.
+    let category = req.params.category
+
+    Image.find({ category: category }).sort({ score: 'desc' }).limit(xNumber).exec(function(err, images) {
+        if (err) return res.status(500).send({ message: `request error: ${err}` })
+        if (!images) return res.status(404).send({ message: 'images do not exist' })
+
+        res.status(200).send({ images })
+    })
+}
+
 module.exports = {
     getImage,
     getImages,
@@ -179,5 +194,6 @@ module.exports = {
     getUrlImageByImageId,
     updateUrlImage,
     saveImage,
-    deleteImage
+    deleteImage,
+    getXimagesOrderByCategory
 }
