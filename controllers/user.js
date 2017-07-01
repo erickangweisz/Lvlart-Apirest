@@ -17,6 +17,8 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('avatar')
 var upld = multer({ storage: storage }).single('img_head')
 
+var user_id
+
 function signUp(req, res) {
     const user = new User({
         baja: req.body.baja,
@@ -52,8 +54,15 @@ function signUp(req, res) {
 function signIn(req, res) {
     User.count({ email: req.body.email, password: req.body.password }, (err, user) => {
         if (user > 0) {
-            res.status(200).send({
-                token: service.createToken(user)
+            // get user by email.
+            User.find({ email: req['body'].email }, (err, user) => {
+                if (err) return res.status(500).send({ message: `request error: ${err}` })
+                if (!user) return res.status(404).send({ message: 'the user dont exist' })
+
+                res.status(200).send({
+                    user_id: user[0]._id,
+                    token: service.createToken(user)
+                })
             })
         } else {
             if (err) return res.status(500).send({ message: `request error: ${err}` })
