@@ -26,4 +26,18 @@ app.get('/images/vs', (req, res) => {
     res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/vs.png')
 })
 
+// return cyclope image
+app.get('/images/cyclops', (req, res) => {
+    res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/cyclops.png')
+})
+
+// return cyclope image
+app.get('/images/spiderman', (req, res) => {
+        res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/spiderman.png')
+    })
+    // return cyclope image
+app.get('/images/superman', (req, res) => {
+    res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/superman.png')
+})
+
 module.exports = app

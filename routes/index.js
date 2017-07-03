@@ -58,13 +58,13 @@ api.put('/theme/:themeId', auth, themeCtrl.updateTheme)
 api.delete('/theme/:themeId', auth, themeCtrl.deleteTheme)
 
 // paths [ comment ]
-api.post('/comment', auth, commentCtrl.createComment)
+api.post('/comment', /*auth,*/ commentCtrl.createComment)
 api.get('/comments/receiver/:idReceiver', commentCtrl.getCommentsByIdReceiver)
 api.get('/comments', commentCtrl.getAllComments)
 api.delete('/comment/:commentId', auth, commentCtrl.deleteComment)
 
 // paths [ duel ]
-api.post('/duel', auth, duelCtrl.createDuel)
+api.post('/duel', /*auth,*/ duelCtrl.createDuel)
 api.post('/duel/:duelId/uploadchallengedimage', duelCtrl.uploadImageChallenged)
 api.post('/duel/:duelId/uploadchallengerimage', duelCtrl.uploadImageChallenger)
 api.get('/duels', duelCtrl.getAllDuels)
