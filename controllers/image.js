@@ -151,7 +151,7 @@ function getXimagesOrderByScore(req, res) {
 function getAllImagesByUserId(req, res) {
     let userId = req.params.userId
 
-    Image.find({ id_user: userId }, (err, images) => {
+    Image.find({ id_user: userId }).sort({ uploaded_at: 'desc' }).exec((err, images) => {
         if (err) return res.status(500).send({ message: `request error: ${err}` })
         if (!images) return res.status(404).send({ message: 'the user dont exist' })
 
@@ -174,7 +174,7 @@ function getXimagesOrderByCategory(req, res) {
     // get categories from request params.
     let category = req.params.category
 
-    Image.find({ category: category }).sort({ score: 'desc' }).limit(xNumber).exec(function(err, images) {
+    Image.find({ category: category }).sort({ uploaded_at: 'desc' }).limit(xNumber).exec(function(err, images) {
         if (err) return res.status(500).send({ message: `request error: ${err}` })
         if (!images) return res.status(404).send({ message: 'images do not exist' })
 
