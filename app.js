@@ -31,13 +31,19 @@ app.get('/images/cyclops', (req, res) => {
     res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/cyclops.png')
 })
 
-// return cyclope image
+// return spiderman image
 app.get('/images/spiderman', (req, res) => {
-        res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/spiderman.png')
-    })
-    // return cyclope image
+    res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/spiderman.png')
+})
+
+// return superman image
 app.get('/images/superman', (req, res) => {
     res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/superman.png')
+})
+
+// return 'no image' image
+app.get('/images/noimage', (req, res) => {
+    res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/noimage.png')
 })
 
 module.exports = app

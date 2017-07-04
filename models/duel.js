@@ -12,7 +12,7 @@ const DuelSchema = Schema({
     id_image_challenged: String,
     created_at: Date,
     is_finalized: Boolean,
-    category: { type: String, enum: ['illustration', '3d_model', 'photography'] },
+    category: { type: String, enum: ['illustration', 'modeling', 'photography'] },
     time: { type: String, enum: ['1_day', '3_days', '1_week'] },
     id_theme: String
 })
