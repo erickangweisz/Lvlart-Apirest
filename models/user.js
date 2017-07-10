@@ -8,7 +8,7 @@ const crypto = require('crypto')
 const UserSchema = new Schema({
     baja: Boolean,
     username: { type: String, unique: true, lowercase: true },
-    password: { type: String, select: false },
+    password: { type: String, select: true }, //select: false
     firstname: String,
     lastname: String,
     birthday: Date,
