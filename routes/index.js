@@ -43,11 +43,12 @@ api.put('/user/:userId/scorebylike', auth, userCtrl.setLikeScoreByUserId)
 api.put('/user/:userId/scorebydislike', auth, userCtrl.setDislikeScoreByUserId)
 api.put('/user/:userId/scorebyvictory', auth, userCtrl.setVictoryScoreByUserId)
 api.put('/user/:userId/scorebydefeat', auth, userCtrl.setDefeatScoreByUserId)
-api.put('/user/:userId/updateuser', auth, userCtrl.updateUser)
+api.put('/user/:userId/updateuser', /*auth,*/ userCtrl.updateUser)
 api.put('/user/:userId/uploadavatar', userCtrl.uploadAvatar)
 api.put('/user/:userId/uploadimghead', userCtrl.uploadImgHead)
 api.get('/user/:userId/imghead', userCtrl.getImageHeaderByUserId)
 api.get('/user/:userId/avatar', userCtrl.getAvatarByUserId)
+api.delete('/user/:userId/deleteuser', userCtrl.deleteUser)
 
 // paths [ theme ]
 api.post('/theme', auth, themeCtrl.createTheme)

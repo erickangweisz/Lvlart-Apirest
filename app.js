@@ -46,4 +46,14 @@ app.get('/images/noimage', (req, res) => {
     res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/noimage.png')
 })
 
+// return 'no header' image
+app.get('/images/noheader', (req, res) => {
+    res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/noheader.png')
+})
+
+// return 'no avatar' image
+app.get('/images/noavatar', (req, res) => {
+    res.sendFile('C:/Users/erick/Desktop/workspace/lvlart-apirest/images/noavatar.png')
+})
+
 module.exports = app

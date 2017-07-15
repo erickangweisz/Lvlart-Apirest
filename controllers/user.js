@@ -273,6 +273,19 @@ function getAvatarByUserId(req, res) {
     })
 }
 
+function deleteUser(req, res) {
+    let userId = req.params.userId
+
+    User.findById(userId, (err, user) => {
+        if (err) res.status(500).send({ message: `error deleting user: ${err}` })
+
+        user.remove(err => {
+            if (err) res.status(500).send({ message: `error deleting user: ${err}` })
+            res.status(200).send({ message: 'the user has been deleted' })
+        })
+    })
+}
+
 module.exports = {
     signUp,
     signIn,
@@ -292,5 +305,6 @@ module.exports = {
     uploadImgHead,
     getImageHeaderByUserId,
     getAvatarByUserId,
-    getXusersOrderByVictories
+    getXusersOrderByVictories,
+    deleteUser
 }
