@@ -106,6 +106,18 @@ function getAllDuelsByCategory(req, res) {
     })
 }
 
+function getXduelsByCategory(req, res) {
+    let xNumber = Number(req.params.number)
+    let category = req.params.category
+
+    Duel.find({ category: category }).sort({ created_at: 'desc' }).limit(xNumber).exec(function(err, duels) {
+        if (err) return res.status(500).send({ message: `request error: ${err}` })
+        if (!duels) return res.status(404).send({ message: 'the duels dont exist' })
+
+        res.status(200).send({ duels })
+    })
+}
+
 function deleteDuel(req, res) {
     let duelId = req.params.duelId
 
@@ -211,6 +223,7 @@ module.exports = {
     getAllDuelsOrderByCreation,
     getXduelsOrderByCreation,
     getAllDuelsByCategory,
+    getXduelsByCategory,
     deleteDuel,
     uploadImageChallenged,
     uploadImageChallenger,
