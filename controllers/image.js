@@ -182,6 +182,18 @@ function getXimagesOrderByCategory(req, res) {
     })
 }
 
+function getXimagesByUserId(req, res) {
+    let xNumber = Number(req.params.number)
+    let userId = req.params.userId
+
+    Image.find({ id_user: userId }).sort({ uploaded_at: 'desc' }).limit(xNumber).exec(function(err, images) {
+        if (err) return res.status(500).send({ message: `request error: ${err}` })
+        if (!images) return res.status(404).send({ message: 'images do not exist' })
+
+        res.status(200).send({ images })
+    })
+}
+
 module.exports = {
     getImage,
     getImages,
@@ -191,6 +203,7 @@ module.exports = {
     getXimagesOrderByLatestUpload,
     getXimagesOrderByScore,
     getAllImagesByUserId,
+    getXimagesByUserId,
     getUrlImageByImageId,
     updateUrlImage,
     saveImage,
