@@ -62,6 +62,21 @@ function getXduelsByCreatedAt(req, res) {
     })
 }
 
+function getXduelsByUserId(req, res) {
+    let xNumber = Number(req.params.number)
+    let userId = req.params.userId
+
+    let query = {}
+    query = { $or: [{ id_user_challenged: { $regex: userId, $options: 'i' } }, { id_user_challenger: { $regex: userId, $options: 'i' } }] }
+
+    Duel.find(query).sort({ created_at: 'desc' }).limit(xNumber).exec(function(err, duels) {
+        if (err) return res.status(500).send({ message: `request error: ${err}` })
+        if (!duels) return res.status(404).send({ message: 'duels do not exist' })
+
+        res.status(200).send({ duels })
+    })
+}
+
 function getAllDuelsByUserId(req, res) {
     let userId = req.params.userId
     let query = {}
@@ -224,6 +239,7 @@ module.exports = {
     getXduelsOrderByCreation,
     getAllDuelsByCategory,
     getXduelsByCategory,
+    getXduelsByUserId,
     deleteDuel,
     uploadImageChallenged,
     uploadImageChallenger,
