@@ -2,8 +2,10 @@
 
 const Image = require('../models/image')
 const config = require('../config')
-    // multer
+
+// multer
 const multer = require('multer')
+
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, 'gallery/')
@@ -12,7 +14,8 @@ var storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now() + '.png')
     }
 })
-var upload = multer({ storage: storage }).single('url_image')
+var upload = multer({ storage: storage }).single('file')
+    // END multer
 
 function getImage(req, res) {
     let imageId = req.params.imageId
@@ -36,9 +39,14 @@ function getImages(req, res) {
 
 function saveImage(req, res) {
     upload(req, res, function(err) {
+        console.log(req.file)
         if (err) {
-            // An error occurred when uploading
+            res.json({ error_code: 1, err_desc: err })
+            return
         }
+        /*if (err) {
+            // An error occurred when uploading
+        }*/
         // Everything went fine
         let image = new Image()
         image.title = req.body.title
@@ -56,6 +64,7 @@ function saveImage(req, res) {
 
             res.status(201).send({ image: imageStored })
         })
+        res.json({ error_code: 0, err_desc: null })
     })
 }
 

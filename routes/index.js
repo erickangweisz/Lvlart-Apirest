@@ -12,7 +12,7 @@ const duelCtrl = require('../controllers/duel')
 const notificationCtrl = require('../controllers/notification')
 
 // paths [ image ]
-api.post('/image', auth, imageCtrl.saveImage)
+api.post('/saveimage', /*auth,*/ imageCtrl.saveImage)
 api.get('/images', imageCtrl.getImages)
 api.get('/image/:imageId', imageCtrl.getImage)
 api.get('/images/user/:userId', imageCtrl.getAllImagesByUserId)
